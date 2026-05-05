@@ -128,7 +128,7 @@ jobs:
             --proxy "socks5://127.0.0.1:1080" \
             --format "$FORMAT" \
             --merge-output-format mp4 \
-            --output "tmp_downloads/%(title)s.%(ext)s" \
+            --output "/downloads/%(title)s.%(ext)s" \
             --no-playlist \
             --retries 10 \
             --fragment-retries 10 \
@@ -148,7 +148,7 @@ jobs:
                 --proxy "socks5://127.0.0.1:1080" \
                 --format "$FORMAT" \
                 --merge-output-format mp4 \
-                --output "tmp_downloads/%(title)s.%(ext)s" \
+                --output "/downloads/%(title)s.%(ext)s" \
                 --no-playlist \
                 --retries 10 \
                 --fragment-retries 10 \
