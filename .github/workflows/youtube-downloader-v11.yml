@@ -113,12 +113,14 @@ jobs:
               ;;
           esac
 
+          mkdir -p tmp_downloads videos
+
           # Download through WARP SOCKS5 proxy
           yt-dlp \
             --proxy "socks5://127.0.0.1:1080" \
             --format "$FORMAT" \
             --merge-output-format mp4 \
-            --output "/downloads/%(title)s.%(ext)s" \
+            --output "tmp_downloads/%(title)s.%(ext)s" \
             --no-playlist \
             --retries 10 \
             --fragment-retries 10 \
@@ -134,7 +136,7 @@ jobs:
                 --proxy "socks5://127.0.0.1:1080" \
                 --format "$FORMAT" \
                 --merge-output-format mp4 \
-                --output "/downloads/%(title)s.%(ext)s" \
+                --output "tmp_downloads/%(title)s.%(ext)s" \
                 --no-playlist \
                 --retries 10 \
                 --fragment-retries 10 \
