@@ -54,7 +54,7 @@ jobs:
 
           echo "⏳ Waiting for WARP (fast check loop)..."
 
-          for i in {1..15}; do
+          for i in {1..30}; do
             RESULT=$(curl -s --max-time 5 --socks5-hostname 127.0.0.1:1080 https://cloudflare.com/cdn-cgi/trace 2>/dev/null || echo "failed")
 
             if echo "$RESULT" | grep -qE "warp=(on|plus)"; then
@@ -62,13 +62,18 @@ jobs:
               break
             fi
 
-            echo "⏳ Attempt $i/15..."
-            sleep 1
+            echo "⏳ Attempt $i/30..."
+            sleep 0.5
           done
 
           END=$(date +%s)
           echo "⏱️ WARP step took: $((END-START)) seconds"
 
+      - name: Install yt-dlp
+        run: |
+          sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
+          sudo chmod a+rx /usr/local/bin/yt-dlp
+      
       - name: Download YouTube Video
         run: |
           START=$(date +%s)
@@ -109,10 +114,6 @@ jobs:
           esac
 
           # Download through WARP SOCKS5 proxy
-          docker run --rm \
-          --network host \
-          -v $(pwd)/tmp_downloads:/downloads \
-          ghcr.io/aceclasher3/ytdlp-runtime:latest \
           yt-dlp \
             --proxy "socks5://127.0.0.1:1080" \
             --format "$FORMAT" \
@@ -121,7 +122,7 @@ jobs:
             --no-playlist \
             --retries 10 \
             --fragment-retries 10 \
-            --concurrent-fragments 4 \
+            --concurrent-fragments 12 \
             --no-check-certificates \
             --prefer-free-formats \
             --no-warnings \
@@ -129,10 +130,6 @@ jobs:
               echo "❌ yt-dlp failed, trying alternative method..."
 
               # Try with different user agent
-              docker run --rm \
-              --network host \
-              -v $(pwd)/tmp_downloads:/downloads \
-              ghcr.io/aceclasher3/ytdlp-runtime:latest \
               yt-dlp \
                 --proxy "socks5://127.0.0.1:1080" \
                 --format "$FORMAT" \
