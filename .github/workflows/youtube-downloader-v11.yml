@@ -123,14 +123,8 @@ jobs:
           docker run --rm \
           --network host \
           -v $(pwd)/tmp_downloads:/downloads \
-          ubuntu:22.04 \
-          bash -c "
-            apt-get update &&
-            apt-get install -y curl ffmpeg &&
-            curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp &&
-            chmod +x /usr/local/bin/yt-dlp &&
-            yt-dlp --output '/downloads/%(title)s.%(ext)s' '$URL'
-          "
+          ghcr.io/aceclasher3/ytdlp-runtime:latest \
+          yt-dlp \
             --proxy "socks5://127.0.0.1:1080" \
             --format "$FORMAT" \
             --merge-output-format mp4 \
