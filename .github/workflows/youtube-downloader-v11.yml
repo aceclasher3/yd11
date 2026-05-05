@@ -63,22 +63,11 @@ jobs:
             fi
 
             echo "⏳ Attempt $i/15..."
-            sleep 2
+            sleep 1
           done
 
           END=$(date +%s)
           echo "⏱️ WARP step took: $((END-START)) seconds"
-
-      - name: Download yt-dlp binary
-        run: |
-          START=$(date +%s)
-
-          curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o yt-dlp
-          chmod +x yt-dlp
-          sudo mv yt-dlp /usr/local/bin/yt-dlp
-
-          END=$(date +%s)
-          echo "⏱️ yt-dlp install: $((END-START)) seconds"
 
       - name: Download YouTube Video
         run: |
